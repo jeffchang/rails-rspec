@@ -3,7 +3,7 @@
 <% end %>
 <br>
 <%= link_to "Admin welcome page", admin_posts_url %>
-<%= link_to "Edit post", edit_admin_post_url(@post) %>
+<%= link_to "Edit post", edit_admin_post_url(@post), id: @post.id %>
 <br>
 <br>
 Published: <%= @post.is_published? %>

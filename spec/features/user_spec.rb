@@ -1,29 +1,36 @@
 require 'spec_helper'
 
 feature 'User browsing the website' do
+
+  before(:each) do
+    10.times do |n|
+      Post.create(title: "Post #{n}", content: "Blah blah blah", is_published: true)
+    end
+  end
+
   context "on homepage" do
     it "sees a list of recent posts titles" do
-      pending
-      # given a user and a list of posts
-      # user visits the homepage
-      # user can see the posts titles
+      visit posts_path
+      Post.all.each do |post|
+        page.should have_content post.title
+      end
     end
 
     it "can click on titles of recent posts and should be on the post show page" do
-      pending
-      # given a user and a list of posts
-      # user visits the homepage
-      # when a user can clicks on a post title they should be on the post show page
-    end
+      visit posts_path
+      id = Post.all.first.id
+      click_link("#{id}")
+      page.should have_content Post.find(id).title
+    end 
   end
 
   context "post show page" do
     it "sees title and body of the post" do
-      pending
-      # given a user and post(s)
-      # user visits the post show page
-      # user should see the post title
-      # user should see the post body
+      visit posts_path
+      id = Post.all.first.id
+      click_link("#{id}")
+      page.should have_content Post.find(id).title
+      page.should have_content Post.find(id).content
     end
   end
 end

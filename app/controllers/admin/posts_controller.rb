@@ -1,4 +1,7 @@
 class Admin::PostsController < ApplicationController
+  
+  before_filter :authenticate, only: :index
+
   def index
     @posts = Post.all
   end
@@ -37,9 +40,17 @@ class Admin::PostsController < ApplicationController
   end
 
   def destroy
-    post = Post.find(params[:destroy])
+    post = Post.find(params[:id])
     post.destroy
 
     redirect_to admin_posts_url
+  end
+
+  protected
+
+  def authenticate
+    authenticate_or_request_with_http_basic do |username, password|
+      username == "geek" && password == "jock"
+    end
   end
 end
